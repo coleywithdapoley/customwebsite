@@ -127,8 +127,18 @@ export function VirtualRack({ category }: Props) {
   }
 
   return (
-    <div className="relative flex min-h-[100svh] flex-col justify-center pb-28 pt-20">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,#ffffff90,transparent_55%)]" />
+    <div className="relative flex min-h-[100svh] flex-col justify-center bg-[#f3f1ec] pb-28 pt-16 [background-image:radial-gradient(#d5d0c8_0.7px,transparent_0.8px)] [background-size:8px_8px]">
+      <div className="pointer-events-none relative z-10 mb-6 px-6 text-center">
+        <p className="text-[10px] tracking-[0.42em] text-sey-muted uppercase">
+          Virtual store
+        </p>
+        <Link
+          href="/"
+          className="pointer-events-auto mt-2 block font-display text-4xl tracking-[0.22em] text-sey-ink uppercase sm:text-6xl"
+        >
+          Seydehwon
+        </Link>
+      </div>
 
       <div
         className="relative z-10 cursor-grab touch-none select-none active:cursor-grabbing"
@@ -139,13 +149,13 @@ export function VirtualRack({ category }: Props) {
         onWheel={onWheel}
       >
         <div className="relative mx-auto h-[440px] overflow-hidden sm:h-[500px]">
-          <div className="absolute top-[52px] right-0 left-0 z-20 h-[3px] bg-gradient-to-r from-transparent via-sey-rail to-transparent" />
-          <div className="absolute top-[48px] left-[8%] z-20 h-2.5 w-2.5 rounded-full bg-sey-rail" />
-          <div className="absolute top-[48px] right-[8%] z-20 h-2.5 w-2.5 rounded-full bg-sey-rail" />
+          <div className="absolute top-[34px] right-[4%] left-[4%] z-20 h-[7px] rounded-full bg-gradient-to-b from-[#fbfbf8] via-[#c5c5c0] to-[#8a8a86] shadow-[0_2px_3px_rgba(0,0,0,0.28)]" />
+          <div className="absolute top-[30px] left-[6%] z-20 h-4 w-4 rounded-full bg-gradient-to-b from-[#eee] to-[#8d8d89] shadow-sm" />
+          <div className="absolute top-[30px] right-[6%] z-20 h-4 w-4 rounded-full bg-gradient-to-b from-[#eee] to-[#8d8d89] shadow-sm" />
 
           <motion.div
             ref={trackRef}
-            className="absolute top-0 left-0 flex h-full items-start will-change-transform"
+            className="absolute top-[22px] left-0 flex h-full items-start will-change-transform"
             style={{
               x: reduce ? x : springX,
               filter: reduce ? "none" : filter,
@@ -209,12 +219,7 @@ function RackItem({
       }}
       onMouseLeave={() => setHovered(false)}
     >
-      <motion.div
-        className="absolute top-[96px] left-1/2 -z-10 h-[250px] w-14 -translate-x-1/2 bg-sey-ink/15 blur-md"
-        animate={{ opacity: active ? 0.4 : 0.2 }}
-      />
-
-      <Hanger className="relative z-10 h-8 w-16" />
+      <Hanger className="relative z-30 -mb-1 h-9 w-20" />
 
       <motion.div
         className="origin-top"
@@ -238,7 +243,7 @@ function RackItem({
           <motion.div layoutId={`garment-${product.slug}`}>
             <Garment
               product={product}
-              className="h-[280px] w-[130px] drop-shadow-lg sm:h-[320px]"
+              className="h-[280px] w-[130px] sm:h-[320px]"
             />
           </motion.div>
         </Link>

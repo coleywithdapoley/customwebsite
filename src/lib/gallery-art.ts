@@ -14,32 +14,32 @@ const PAINTINGS: Omit<Artwork, "id" | "slug" | "artist" | "productSlug" | "price
   {
     title: "Call Sam",
     subtitle: "Seydehwon",
-    image: "/images/gallery/paintings/call-sam.jpg",
+    image: "/images/gallery/paintings/hung/call-sam.jpg",
   },
   {
     title: "Study",
     subtitle: "Seydehwon",
-    image: "/images/gallery/paintings/study.jpg",
+    image: "/images/gallery/paintings/hung/study.jpg",
   },
   {
     title: "Seascape",
     subtitle: "Seydehwon",
-    image: "/images/gallery/paintings/seascape.jpg",
+    image: "/images/gallery/paintings/hung/seascape.jpg",
   },
   {
     title: "Green Suit",
     subtitle: "Seydehwon",
-    image: "/images/gallery/paintings/green-suit.jpg",
+    image: "/images/gallery/paintings/hung/green-suit.jpg",
   },
   {
     title: "Portrait",
     subtitle: "Seydehwon",
-    image: "/images/gallery/paintings/portrait.jpg",
+    image: "/images/gallery/paintings/hung/portrait.jpg",
   },
   {
     title: "Flowers",
     subtitle: "Seydehwon",
-    image: "/images/gallery/paintings/flowers.jpg",
+    image: "/images/gallery/paintings/hung/flowers.jpg",
   },
 ];
 

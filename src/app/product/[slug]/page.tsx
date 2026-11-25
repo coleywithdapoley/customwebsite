@@ -27,7 +27,7 @@ export default async function ProductPage({
   const product = getProduct(slug);
   if (!product) notFound();
   return (
-    <main className="min-h-full bg-sey-bg pb-32 pt-24">
+    <main className="min-h-full bg-[#f3f1ec] pb-36 [background-image:radial-gradient(#d5d0c8_0.7px,transparent_0.8px)] [background-size:8px_8px]">
       <ProductView product={product} />
     </main>
   );

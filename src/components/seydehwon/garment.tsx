@@ -9,6 +9,17 @@ type Props = {
 export function Garment({ product, className = "" }: Props) {
   const { fill, accent, shape } = product;
 
+  if (product.image) {
+    return (
+      <img
+        src={product.image}
+        alt={product.name}
+        draggable={false}
+        className={`${className} bg-transparent object-contain object-top [filter:drop-shadow(0_12px_18px_rgba(0,0,0,0.2))]`}
+      />
+    );
+  }
+
   if (shape === "hoodie") {
     return (
       <svg viewBox="0 0 120 160" className={className} aria-hidden>
@@ -53,7 +64,7 @@ export function Garment({ product, className = "" }: Props) {
 
   if (shape === "cap") {
     return (
-      <svg viewBox="0 0 120 160" className={className} aria-hidden>
+      <svg viewBox="18 44 84 54" className={className} aria-hidden>
         <ellipse cx="60" cy="78" rx="38" ry="16" fill={fill} />
         <path d="M28 78 Q60 48 92 78" fill={fill} />
         <path d="M22 82 L55 88 L98 84" stroke={accent ?? "#00000055"} strokeWidth="6" fill="none" strokeLinecap="round" />
@@ -63,7 +74,7 @@ export function Garment({ product, className = "" }: Props) {
 
   if (shape === "bag") {
     return (
-      <svg viewBox="0 0 120 160" className={className} aria-hidden>
+      <svg viewBox="24 16 72 118" className={className} aria-hidden>
         <path d="M40 40 Q60 20 80 40" fill="none" stroke={fill} strokeWidth="5" />
         <rect x="28" y="48" width="64" height="80" rx="4" fill={fill} />
         <rect x="40" y="70" width="40" height="8" rx="2" fill="#00000022" />
@@ -73,7 +84,7 @@ export function Garment({ product, className = "" }: Props) {
 
   if (shape === "shoe") {
     return (
-      <svg viewBox="0 0 120 160" className={className} aria-hidden>
+      <svg viewBox="16 66 100 52" className={className} aria-hidden>
         <path
           d="M22 100 C30 78, 55 70, 78 78 C95 84, 108 92, 110 105 L110 112 L20 112 Z"
           fill={fill}
@@ -99,16 +110,28 @@ export function Garment({ product, className = "" }: Props) {
 
 export function Hanger({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 80 36" className={className} aria-hidden>
+    <svg viewBox="0 0 90 42" className={className} aria-hidden>
       <path
-        d="M40 4 C40 4, 40 12, 40 14 M18 28 L40 14 L62 28"
+        d="M45 3.5 a3 3 0 0 1 0 6 V14"
         fill="none"
-        stroke="#8a7a5c"
-        strokeWidth="2.5"
+        stroke="#5c5348"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M16 32 L45 15 L74 32"
+        fill="none"
+        stroke="#c9a56b"
+        strokeWidth="5.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="40" cy="4" r="3" fill="#8a7a5c" />
+      <path
+        d="M18 32 H72"
+        stroke="#b08a52"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

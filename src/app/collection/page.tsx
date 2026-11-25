@@ -2,12 +2,12 @@ import { CurvedGallery } from "@/components/seydehwon/curved-gallery";
 
 export const metadata = {
   title: "Gallery — SEYDEHWON®",
-  description: "A white gallery. Scroll to walk past the pictures.",
+  description: "A curved gallery hall. Scroll to walk past the paintings, then into the store.",
 };
 
 export default function CollectionPage() {
   return (
-    <main className="min-h-full bg-white">
+    <main className="min-h-full bg-[#1a1918]">
       <CurvedGallery />
     </main>
   );

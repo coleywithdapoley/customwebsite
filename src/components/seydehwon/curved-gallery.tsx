@@ -35,7 +35,7 @@ export function CurvedGallery() {
       const dy = e.clientY - drag.current.y;
       targetProgressRef.current = Math.min(
         1,
-        Math.max(0, drag.current.progress + -dy * 0.00135),
+        Math.max(0, drag.current.progress + -dy * 0.00064),
       );
     },
     [dragging],
@@ -56,7 +56,7 @@ export function CurvedGallery() {
       }
       targetProgressRef.current = Math.min(
         1,
-        Math.max(0, targetProgressRef.current + e.deltaY * 0.0011),
+        Math.max(0, targetProgressRef.current + e.deltaY * 0.00052),
       );
     };
     const el = document.getElementById("sey-gallery-stage");
@@ -88,7 +88,7 @@ export function CurvedGallery() {
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] overflow-hidden bg-white">
+    <section className="relative min-h-[100svh] overflow-hidden bg-[#1a1918]">
       <div
         id="sey-gallery-stage"
         className="absolute inset-0 z-[1] touch-none"
@@ -106,11 +106,11 @@ export function CurvedGallery() {
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between px-5 pt-[4.75rem] sm:px-8 sm:pt-24">
-        <p className="text-[10px] tracking-[0.4em] text-sey-ink uppercase">
+        <p className="text-[10px] tracking-[0.4em] text-white uppercase">
           Gallery
         </p>
         <p
-          className={`text-[10px] tracking-[0.22em] text-sey-muted uppercase ${
+          className={`text-[10px] tracking-[0.22em] text-white/70 uppercase ${
             hint ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -124,9 +124,9 @@ export function CurvedGallery() {
           focused ? "opacity-0" : "opacity-100"
         }`}
       >
-        <div className="h-px w-24 bg-sey-line">
+        <div className="h-px w-24 bg-white/30">
           <div
-            className="h-full bg-sey-ink"
+            className="h-full bg-white"
             style={{ width: `${Math.round(progress * 100)}%` }}
           />
         </div>
@@ -142,10 +142,10 @@ export function CurvedGallery() {
       >
         {focused ? (
           <div className="pointer-events-auto flex max-w-sm flex-col items-center gap-3 text-center">
-            <p className="font-display text-sm tracking-[0.12em] text-sey-ink uppercase sm:text-base">
+            <p className="font-display text-sm tracking-[0.12em] text-white uppercase sm:text-base">
               {focused.title}
             </p>
-            <p className="text-[10px] tracking-[0.22em] text-sey-muted uppercase">
+            <p className="text-[10px] tracking-[0.22em] text-white/70 uppercase">
               {focused.subtitle}
             </p>
             {focused.productSlug ? (
