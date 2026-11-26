@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function CollectionPage() {
   return (
-    <main className="min-h-full bg-[#1a1918]">
+    <main className="min-h-full bg-[#3d3832]">
       <CurvedGallery />
     </main>
   );

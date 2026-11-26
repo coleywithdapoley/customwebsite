@@ -88,7 +88,7 @@ export function CurvedGallery() {
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] overflow-hidden bg-[#1a1918]">
+    <section className="relative min-h-[100svh] overflow-hidden bg-[#3d3832]">
       <div
         id="sey-gallery-stage"
         className="absolute inset-0 z-[1] touch-none"

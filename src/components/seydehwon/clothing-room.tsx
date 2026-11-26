@@ -20,12 +20,12 @@ const STRIDE = ITEM_WIDTH + GAP;
 const VIEW = 700;
 const STEP = 160;
 const TURN = 560;
-// Eye sits `P` pixels in front of the screen. `D` is how far each wall stands from that eye.
-const P = 540;
-const D = 860;
+// Closer walls + shorter perspective so the room reads as a real box around you.
+const P = 460;
+const D = 720;
 const ROOM = D * 2;
-const FLOOR = 460;
-const CEILING = 300;
+const FLOOR = 520;
+const CEILING = 280;
 const WALL_H = FLOOR + CEILING;
 
 const ORDER = ["clothing", "caps", "bags", "shoes"] as const;
@@ -213,39 +213,57 @@ export function ClothingRoom() {
   return (
     <div
       ref={roomRef}
-      className="relative h-[100svh] cursor-grab touch-none overflow-hidden bg-[#e4dfd6] select-none active:cursor-grabbing"
-      style={{ perspective: `${P}px`, perspectiveOrigin: "50% 42%" }}
+      className="relative h-[100svh] cursor-grab touch-none overflow-hidden bg-[#d9d3c8] select-none active:cursor-grabbing"
+      style={{ perspective: `${P}px`, perspectiveOrigin: "50% 40%" }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
     >
       <motion.div
-        className="absolute top-[42%] left-1/2"
+        className="absolute top-[40%] left-1/2"
         style={{ transformStyle: "preserve-3d", transform: roomTransform }}
       >
         <div
-          className="absolute bg-[#e7e2d8]"
+          className="absolute"
           style={{
             width: ROOM,
             height: ROOM,
             marginLeft: -D,
             marginTop: -D,
             transform: `rotateX(90deg) translateZ(${-FLOOR}px)`,
-            backgroundImage:
-              "radial-gradient(ellipse at center, #efeae2 0%, #e3ddd3 62%, #d4cdc2 100%)",
+            background:
+              "radial-gradient(ellipse at center, #f4efe6 0%, #e5dfd4 48%, #cfc7ba 100%)",
+            boxShadow: "inset 0 0 120px rgba(60,50,40,0.18)",
           }}
         />
         <div
-          className="absolute bg-[#f6f4ef]"
+          className="absolute"
           style={{
             width: ROOM,
             height: ROOM,
             marginLeft: -D,
             marginTop: -D,
             transform: `rotateX(-90deg) translateZ(${-CEILING}px)`,
+            background:
+              "radial-gradient(ellipse at center, #fbf9f5 0%, #ebe6dc 70%, #d8d1c5 100%)",
           }}
         />
+        {/* Corner posts so the box reads as 3D while turning */}
+        {[45, 135, 225, 315].map((deg) => (
+          <div
+            key={deg}
+            className="absolute bg-[#d6d0c6]"
+            style={{
+              width: 18,
+              height: WALL_H,
+              marginLeft: -9,
+              marginTop: -CEILING,
+              transform: `rotateY(${deg}deg) translateZ(${-D * Math.SQRT2}px)`,
+              boxShadow: "0 0 18px rgba(0,0,0,0.08)",
+            }}
+          />
+        ))}
         {faces.map((face) => (
           <div
             key={face.wall}
@@ -257,17 +275,29 @@ export function ClothingRoom() {
               marginTop: -CEILING,
               transform: `rotateY(${face.deg}deg) translateZ(${-D}px)`,
               backfaceVisibility: "hidden",
+              transformStyle: "preserve-3d",
             }}
           >
-            <div className="relative flex h-full flex-col items-center bg-[#f3f1ec] px-8 pt-8 [background-image:radial-gradient(#d5d0c8_0.7px,transparent_0.8px)] [background-size:8px_8px]">
+            <div
+              className="relative flex h-full flex-col items-center px-8 pt-10"
+              style={{
+                backgroundColor: "#f5f2eb",
+                backgroundImage:
+                  "radial-gradient(#d5d0c8 0.7px, transparent 0.8px), linear-gradient(180deg, rgba(255,255,255,0.55) 0%, transparent 28%, transparent 72%, rgba(40,35,28,0.08) 100%)",
+                backgroundSize: "8px 8px, 100% 100%",
+                boxShadow: "inset 0 0 90px rgba(80,70,55,0.08)",
+              }}
+            >
               {face.node}
-              <div className="absolute inset-x-0 bottom-0 h-3 bg-[#e3ddd4]" />
+              <div className="absolute inset-x-0 bottom-0 h-5 bg-[#ddd6cb] shadow-[0_-6px_18px_rgba(0,0,0,0.06)]" />
+              <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/10 to-transparent" />
+              <div className="absolute inset-y-0 right-0 w-3 bg-gradient-to-l from-black/10 to-transparent" />
             </div>
           </div>
         ))}
       </motion.div>
 
-      <p className="pointer-events-none absolute inset-x-0 bottom-28 z-10 text-center text-[11px] tracking-[0.22em] text-[#6f6f6b] uppercase">
+      <p className="pointer-events-none absolute inset-x-0 bottom-28 z-10 text-center text-[11px] tracking-[0.22em] text-[#5f5a52] uppercase">
         {label} · Scroll up to turn
       </p>
     </div>

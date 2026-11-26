@@ -16,19 +16,22 @@ const WALK_START = 0.04;
 const WALK_END = 0.74;
 const WALK_SPAN = WALK_END - WALK_START;
 const DOOR_T = 0.9;
+/** Hall ribbons stop here so the store door closes the corridor on the end wall. */
+const HALL_END = DOOR_T;
 
+// Clockwise clock-arc: opens with both walls, then sweeps right like a clock hand.
 const curve = new THREE.CatmullRomCurve3(
   [
     new THREE.Vector3(0, 0, -2),
-    new THREE.Vector3(0.05, 0, 4),
-    new THREE.Vector3(0.45, 0, 10),
-    new THREE.Vector3(0.85, 0, 16),
-    new THREE.Vector3(0.4, 0, 22),
-    new THREE.Vector3(0, 0, 28),
+    new THREE.Vector3(0.4, 0, 5),
+    new THREE.Vector3(2.2, 0, 11),
+    new THREE.Vector3(6.5, 0, 17),
+    new THREE.Vector3(12.5, 0, 21),
+    new THREE.Vector3(18.5, 0, 22),
   ],
   false,
   "catmullrom",
-  0.3,
+  0.25,
 );
 
 const STATIONS = [0.34, 0.5, 0.66];
@@ -65,7 +68,7 @@ export function GalleryCanvas({
 }: GallerySceneProps) {
   const start = frameAt(WALK_START);
   return (
-    <div className="absolute inset-0 bg-[#141311]">
+    <div className="absolute inset-0 bg-[#3d3832]">
       <Canvas
         className="!absolute inset-0 h-full w-full touch-none"
         camera={{
@@ -83,7 +86,7 @@ export function GalleryCanvas({
           depth: true,
         }}
         onCreated={({ gl }) => {
-          gl.setClearColor("#141311");
+          gl.setClearColor("#3d3832");
           gl.outputColorSpace = THREE.SRGBColorSpace;
           gl.toneMapping = THREE.NoToneMapping;
         }}
@@ -150,7 +153,8 @@ function GalleryWorld({
 
   return (
     <>
-      <ambientLight intensity={1} color="#ffffff" />
+      <ambientLight intensity={1.35} color="#fff6ea" />
+      <directionalLight intensity={0.55} color="#ffe6c4" position={[2, 4, 1]} />
       <CurvedHall />
       <EndWall />
       <StoreDoor />
@@ -191,7 +195,7 @@ function ribbonGeometry(kind: "floor" | "ceiling" | "left" | "right") {
   const uvs: number[] = [];
   const indices: number[] = [];
   for (let i = 0; i <= STEPS; i++) {
-    const { point, right } = frameAt(i / STEPS);
+    const { point, right } = frameAt((i / STEPS) * HALL_END);
     if (kind === "floor" || kind === "ceiling") {
       const y = kind === "floor" ? 0 : HALL_H;
       const a = point.clone().addScaledVector(right, -HALF_W);
@@ -226,10 +230,10 @@ function coveGeometry(side: -1 | 1) {
   const positions: number[] = [];
   const indices: number[] = [];
   for (let i = 0; i <= STEPS; i++) {
-    const { point, right } = frameAt(i / STEPS);
+    const { point, right } = frameAt((i / STEPS) * HALL_END);
     const outer = point.clone().addScaledVector(right, side * (HALF_W - 0.02));
-    const inner = point.clone().addScaledVector(right, side * (HALF_W - 0.34));
-    positions.push(outer.x, HALL_H - 0.16, outer.z, inner.x, HALL_H - 0.16, inner.z);
+    const inner = point.clone().addScaledVector(right, side * (HALF_W - 0.42));
+    positions.push(outer.x, HALL_H - 0.12, outer.z, inner.x, HALL_H - 0.12, inner.z);
   }
   for (let i = 0; i < STEPS; i++) {
     const o = i * 2;
@@ -274,29 +278,29 @@ function CurvedHall() {
         <meshBasicMaterial
           key={floor?.uuid ?? "plain"}
           map={floor ?? undefined}
-          color="#ffffff"
+          color="#f3eee6"
           side={THREE.DoubleSide}
         />
       </mesh>
       <mesh geometry={geos.ceiling}>
-        <meshBasicMaterial color="#161412" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#4a4440" side={THREE.DoubleSide} />
       </mesh>
       <mesh geometry={geos.left}>
-        <meshBasicMaterial color="#3a342f" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#6e655c" side={THREE.DoubleSide} />
       </mesh>
       <mesh geometry={geos.right}>
-        <meshBasicMaterial color="#3a342f" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#6e655c" side={THREE.DoubleSide} />
       </mesh>
       <mesh geometry={geos.coveL}>
-        <meshBasicMaterial color="#f0d2a4" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#ffe7c2" side={THREE.DoubleSide} />
       </mesh>
       <mesh geometry={geos.coveR}>
-        <meshBasicMaterial color="#f0d2a4" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#ffe7c2" side={THREE.DoubleSide} />
       </mesh>
       {doors.map((door) => (
         <mesh key={door.key} position={door.position} rotation={[0, door.rotation, 0]}>
           <planeGeometry args={[0.95, 2.15]} />
-          <meshBasicMaterial color="#d7e0da" side={THREE.DoubleSide} />
+          <meshBasicMaterial color="#eef3ee" side={THREE.DoubleSide} />
         </mesh>
       ))}
     </group>
@@ -304,12 +308,12 @@ function CurvedHall() {
 }
 
 function EndWall() {
-  const { point, tangent } = frameAt(0.965);
+  const { point, tangent } = frameAt(DOOR_T);
   const yaw = Math.atan2(tangent.x, tangent.z) + Math.PI;
   return (
     <mesh position={[point.x, HALL_H / 2, point.z]} rotation={[0, yaw, 0]}>
-      <planeGeometry args={[HALF_W * 2 + 0.4, HALL_H]} />
-      <meshBasicMaterial color="#2c2824" side={THREE.DoubleSide} />
+      <planeGeometry args={[HALF_W * 2 + 0.5, HALL_H]} />
+      <meshBasicMaterial color="#5a524a" side={THREE.DoubleSide} />
     </mesh>
   );
 }
@@ -318,6 +322,9 @@ function StoreDoor() {
   const router = useRouter();
   const { point, tangent } = frameAt(DOOR_T);
   const yaw = Math.atan2(tangent.x, tangent.z) + Math.PI;
+  const doorW = 1.2;
+  const doorH = 2.3;
+  const sill = 0.04;
   const label = useMemo(() => {
     const c = document.createElement("canvas");
     c.width = 512;
@@ -334,13 +341,20 @@ function StoreDoor() {
     tex.colorSpace = THREE.SRGBColorSpace;
     return tex;
   }, []);
+  const goStore = (e: { stopPropagation: () => void }) => {
+    e.stopPropagation();
+    router.push("/");
+  };
   return (
-    <group position={[point.x, 1.35, point.z]} rotation={[0, yaw, 0]}>
+    <group position={[point.x, 0, point.z]} rotation={[0, yaw, 0]}>
+      {/* Thin frame set into the end wall */}
+      <mesh position={[0, sill + doorH / 2, 0.015]}>
+        <planeGeometry args={[doorW + 0.12, doorH + 0.12]} />
+        <meshBasicMaterial color="#1a1816" />
+      </mesh>
       <mesh
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          router.push("/");
-        }}
+        position={[0, sill + doorH / 2, 0.03]}
+        onPointerDown={goStore}
         onPointerOver={() => {
           document.body.style.cursor = "pointer";
         }}
@@ -348,17 +362,11 @@ function StoreDoor() {
           document.body.style.cursor = "grab";
         }}
       >
-        <planeGeometry args={[1.35, 2.35]} />
+        <planeGeometry args={[doorW, doorH]} />
         <meshBasicMaterial color="#d5ddd8" />
       </mesh>
-      <mesh
-        position={[0, 0, 0.05]}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          router.push("/");
-        }}
-      >
-        <planeGeometry args={[1.05, 0.26]} />
+      <mesh position={[0, sill + doorH * 0.58, 0.045]} onPointerDown={goStore}>
+        <planeGeometry args={[0.9, 0.24]} />
         <meshBasicMaterial map={label} toneMapped={false} />
       </mesh>
     </group>
@@ -435,15 +443,15 @@ function Picture({
     <group position={[spot.x, EYE + 0.15, spot.z]} rotation={[0, yaw + (side === "left" ? Math.PI / 2 : -Math.PI / 2), 0]}>
       <mesh position={[0, h / 2 + 0.16, 0.05]}>
         <boxGeometry args={[w * 0.7, 0.045, 0.06]} />
-        <meshBasicMaterial color="#1a1918" />
+        <meshBasicMaterial color="#3a3530" />
       </mesh>
       <mesh position={[0, h / 2 + 0.16, 0.09]}>
         <boxGeometry args={[w * 0.55, 0.02, 0.02]} />
-        <meshBasicMaterial color="#ffe7c4" />
+        <meshBasicMaterial color="#fff0d0" />
       </mesh>
       <mesh position={[0, 0, 0.02]}>
         <boxGeometry args={[w + 0.12, h + 0.12, 0.05]} />
-        <meshBasicMaterial color="#141312" />
+        <meshBasicMaterial color="#2e2a26" />
       </mesh>
       <mesh
         position={[0, 0, 0.06]}
